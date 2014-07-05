@@ -66,7 +66,18 @@ int main(){
 
 	cout << g.dfs(0,2) << endl;
 	cout << g.dfs(0,3) << endl;
+	cout << g.bfs(0,2) << endl;
 
+	Graph wg(Graph::MAP, 5);
+	wg.weighted();
+	wg.setWeight(0,1,2);
+	wg.setWeight(1,2,4);
+	wg.setWeight(2,1,3);
+	wg.setWeight(3,4,3);
+	wg.setWeight(4,3,3);
+
+	cout << wg.dijkstra(0,2) << endl;
+	cout << wg.dijkstra(0,3) << endl;
 
 }
 

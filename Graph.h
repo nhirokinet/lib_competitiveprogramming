@@ -108,7 +108,7 @@ class Graph {
 			q.push(from);
 			q.push(-1);
 
-			while(q.empty()) {
+			while(!q.empty()) {
 				if(q.front() == -1){
 					q.pop();
 					q.push(-1);
@@ -117,8 +117,6 @@ class Graph {
 				}
 
 				int next = q.front();
-				if(visited[next])
-					continue;
 
 				visited[next] = 1;
 				q.pop();
@@ -154,9 +152,36 @@ class Graph {
 		}
 
 		int dijkstra (int from, int to) {
-			if(mode==MAP) {
-				//TODO
+			int *visited = (int *) calloc(graph_size, sizeof(int));
+			std::priority_queue<long long> q;
+
+			if(from==to)
+				return 0;
+
+			q.push(from);
+			visited[from] = 1;
+
+			while(!q.empty()) {
+				long long next = q.top();
+				long long distance = next>>32;
+				next = next & ((1LL<<31)-1LL);
+
+				if(next==to)
+					return distance;
+
+				visited[next] = 1;
+				q.pop();
+
+				if(mode==MAP) {
+					for(int i=0; i<graph_size; i++) {
+						if(graph_map[next*graph_size + i] && next!=i && !visited[i]){
+							q.push(((distance+weight_map[next*graph_size + i])<<32) | i);
+							visited[i] = 1;
+						}
+					}
+				}
 			}
+
 			return -1;
 		}
 };
