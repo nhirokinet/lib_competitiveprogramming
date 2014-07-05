@@ -1,8 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <set>
+#include <queue>
 
 #include "UnionFind.h"
 #include "LargeInt.h"
+#include "Graph.h"
+
 #include "functions.h"
 
 using namespace std;
@@ -54,5 +58,15 @@ int main(){
 	cout << uf.combine(0,5) << endl;
 	cout << uf.combine(0,5) << endl;
 	cout << uf.size() << endl;
+
+	Graph g(Graph::MAP, 5);
+	g.bothConnect(0,1);
+	g.bothConnect(2,1);
+	g.bothConnect(3,4);
+
+	cout << g.dfs(0,2) << endl;
+	cout << g.dfs(0,3) << endl;
+
+
 }
 
