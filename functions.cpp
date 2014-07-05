@@ -1,59 +1,11 @@
 #include <iostream>
 #include <vector>
 
+#include "UnionFind.cpp"
+#include "LargeInt.cpp"
+
 using namespace std;
 
-void extgcd(long long a, long long b, long long* x, long long* y){
-	if(b == 0){
-		*x = 1;
-		*y = 0;
-		return;
-	}
-
-	extgcd(b, a%b, y, x);
-	(*y) -= (a / b) * (*x);
-}
-
-/*
-Require: extgct
-   */
-long long mod_inverse (long long in, long long mod){
-	long long x, y;
-	extgcd(in, mod, &x, &y);
-	if(x<0)
-		x += mod * ((-x + mod) / mod);
-
-	return x % mod;
-}
-
-long long mod_pow (long long x, long long n, long long mod){
-	if(n==0)
-		return 1;
-
-	if(n==1)
-		return x % mod;
-
-	long long tmp = mod_pow(x, n/2, mod);
-	return (((tmp * tmp) % mod) * ((n%2) ? x: 1)) % mod;
-}
-
-/*
-Require: mod_inverse
-   */
-long long mod_nck (long long n, long long k, long long mod){
-	long long ret = 1;
-	for(long long i=(n-k+1); i<=n; i++){
-		ret *= i;
-		ret %= mod;
-	}
-
-	for(long long i=1; i<=k; i++){
-		ret *= mod_inverse(i, mod);
-		ret %= mod;
-	}
-
-	return ret;
-}
 
 /*
    Required for sort_two_arrays
@@ -110,62 +62,6 @@ int julianday (int year, int month, int day){
 	return year*365 + year/4 - year/100 + year/400 + (int)((double)(month-2) * 30.59) + day - 678912;
 }
 
-class UnionFind {
-	private:
-		int *parent;
-		int *rank;
-
-		int size;
-	public:
-		UnionFind(int size) {
-			this->size = size;
-			this->parent = (int *)malloc(sizeof(int) * size);
-			this->rank = (int *)malloc(sizeof(int) * size);
-
-			for(int i=0; i<size; i++) {
-				parent[i] = i;
-				rank[i] = 1;
-			}
-		}
-
-		~UnionFind() {
-			free(parent);
-			free(rank);
-		}
-
-		bool combine(int id_a, int id_b) {
-			id_a = find(id_a);
-			id_b = find(id_b);
-			if (id_a == id_b) {
-				return false;
-			}
-
-			if(rank[id_a] > rank[id_b]) {
-				parent[id_b] = id_a;
-			}
-
-			if(rank[id_a] < rank[id_b]) {
-				parent[id_a] = id_b;
-			}
-
-			if(rank[id_a] == rank[id_b]){
-				parent[id_a] = id_b;
-				rank[id_a]++;
-			}
-			
-			return true;
-		}
-
-		bool sameGroup(int id_a, int id_b) {
-			return find(id_a) == find(id_b);
-		}
-
-		int find(int id) {
-			if(parent[id] == id)
-				return id;
-			return parent[id] = find(parent[id]);
-		}
-};
 
 /*
    Below are for testing this code
@@ -174,13 +70,13 @@ class UnionFind {
 
 int main(){
 	cout << "MOD = " << MOD << endl;
-	cout << "mod_inverse (2, MOD) = " << mod_inverse(2, MOD) << endl;
-	cout << "mod_inverse (3, MOD) = " << mod_inverse(3, MOD) << endl;
-	cout << "mod_pow (2, 13, MOD) = " << mod_pow(2, 13, MOD) << endl;
-	cout << "mod_pow (2, 128, MOD) = " << mod_pow(2, 128, MOD) << endl;
-	cout << "mod_nck (5, 2, MOD) = " << mod_nck(5, 2, MOD) << endl;
-	cout << "mod_nck (6, 3, MOD) = " << mod_nck(6, 3, MOD) << endl;
-	cout << "mod_nck (100, 50, MOD) = " << mod_nck(100, 50, MOD) << endl;
+	cout << "mod_inverse (2, MOD) = " << LargeInt::mod_inverse(2, MOD) << endl;
+	cout << "mod_inverse (3, MOD) = " << LargeInt::mod_inverse(3, MOD) << endl;
+	cout << "mod_pow (2, 13, MOD) = " << LargeInt::mod_pow(2, 13, MOD) << endl;
+	cout << "mod_pow (2, 128, MOD) = " << LargeInt::mod_pow(2, 128, MOD) << endl;
+	cout << "mod_nck (5, 2, MOD) = " << LargeInt::mod_nck(5, 2, MOD) << endl;
+	cout << "mod_nck (6, 3, MOD) = " << LargeInt::mod_nck(6, 3, MOD) << endl;
+	cout << "mod_nck (100, 50, MOD) = " << LargeInt::mod_nck(100, 50, MOD) << endl;
 
 	vector <int> keys, values;
 
@@ -212,5 +108,6 @@ int main(){
 	cout << uf.sameGroup(1,3) << endl;
 	cout << uf.combine(0,5) << endl;
 	cout << uf.combine(0,5) << endl;
+	cout << uf.size() << endl;
 }
 
