@@ -137,13 +137,15 @@ class Graph {
 					std::set<int>::iterator it = graph_set[next].begin();
 
 					while(it!=graph_set[next].end()){
-						if(graph_map[next*graph_size + *it] && next!=*it && !visited[*it]){
+						if(next!=*it && !visited[*it]){
 							if(*it == to)
 								return distance+1;
 
 							q.push(*it);
 							visited[*it] = 1;
 						}
+						
+						++it;
 					}
 				}
 			}

@@ -59,6 +59,8 @@ int main(){
 	cout << uf.combine(0,5) << endl;
 	cout << uf.size() << endl;
 
+	cout << "g" << endl;
+
 	Graph g(Graph::MAP, 5);
 	g.bothConnect(0,1);
 	g.bothConnect(2,1);
@@ -67,6 +69,19 @@ int main(){
 	cout << g.dfs(0,2) << endl;
 	cout << g.dfs(0,3) << endl;
 	cout << g.bfs(0,2) << endl;
+
+	cout << "g2" << endl;
+
+	Graph g2(Graph::SET, 5);
+	g2.bothConnect(0,1);
+	g2.bothConnect(2,1);
+	g2.bothConnect(3,4);
+
+	cout << g2.dfs(0,2) << endl;
+	cout << g2.dfs(0,3) << endl;
+	cout << g2.bfs(0,2) << endl;
+
+	cout << "wg" << endl;
 
 	Graph wg(Graph::MAP, 5);
 	wg.weighted();
